@@ -1,0 +1,14 @@
+torch
+torchvision
+torchaudio
+transformers
+accelerate
+peft
+datasets
+scikit-learn
+pillow
+tqdm
+tenacity
+wandb
+sentence-transformers
+qwen_vl_utils
