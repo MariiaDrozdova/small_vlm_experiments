@@ -42,11 +42,7 @@ def configure_trainable_params(model, part_to_train, lora_r, lora_alpha, lora_dr
         ))
     if part_to_train == "LoRA":
         return lora_wrap(model)
-    elif part_to_train == "lora_to_decoder":
-        model = lora_wrap(model)
-        for p in model.parameters():
-            p.requires_grad = False
-
+  
     elif part_to_train == "lora_to_vision":
         model = lora_wrap(model)
         for p in model.parameters():
@@ -55,6 +51,7 @@ def configure_trainable_params(model, part_to_train, lora_r, lora_alpha, lora_dr
         for n, p in model.named_parameters():
             if _is_lora_param(n) and any(k in n for k in VISION_KEYS):
                 p.requires_grad = True
+            return model
 
     elif part_to_train == "lora_to_decoder":
         model = lora_wrap(model)
@@ -65,5 +62,6 @@ def configure_trainable_params(model, part_to_train, lora_r, lora_alpha, lora_dr
             in_vision = any(k in n for k in VISION_KEYS)
             if _is_lora_param(n) and not in_vision:
                 p.requires_grad = True
+        return model
 
     raise ValueError(f"Unknown part_to_train: {part_to_train}")
